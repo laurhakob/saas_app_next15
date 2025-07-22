@@ -2,13 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function MyJourney() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-semibold underline">
-        Welcome to my SaaS App
+        My Journey
       </h1>
-      <Button>Let&apos;s get started </Button>
+      <p>Your learning journey starts here!</p>
+      <Button>View Journey</Button>
     </div>
   );
 }
