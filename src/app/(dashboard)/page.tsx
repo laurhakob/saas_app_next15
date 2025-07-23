@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Save, Clock } from "lucide-react";
+import CompanionsList from "@/components/CompanionsList";
+import Cta from "@/components/Cta";
 
 export default function Home() {
   const companions = [
@@ -48,15 +50,15 @@ export default function Home() {
                   <Save className="text-white bg-black rounded-full p-1 h-6 w-6" />
                 </span>
               </div>
-              <h3 className={`text-lg font-bold ${companion.textColor}`}>
+              <h3 className={`text-lg font-bold ${companion.color}`}>
                 {companion.title}
               </h3>
               <p className={`text-sm ${companion.textColor} mb-4`}>
                 {companion.category === "Science"
                   ? "Neural Network of the Brain"
                   : companion.category === "Math"
-                    ? "Derivatives & Integrals"
-                    : "Language"}
+                  ? "Derivatives & Integrals"
+                  : "Language"}
               </p>
               <p
                 className={`text-sm ${companion.textColor} mb-4 flex items-center`}
@@ -70,6 +72,10 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="mt-12 flex space-x-8">
+        <CompanionsList />
+        <Cta />
       </div>
     </div>
   );
