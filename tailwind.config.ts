@@ -51,6 +51,10 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        lightblue: {
+          200: "#bfdbfe", // Light blue shade similar to the image
+          800: "#1e40af", // Darker blue for text
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
