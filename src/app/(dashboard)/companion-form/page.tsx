@@ -70,7 +70,7 @@ export default function CompanionForm() {
             >
               <option value="">Select Speaking Style</option>
               <option value="formal">Formal</option>
-              <option value="informal">Informal</option>
+              <option value="casual">Casual</option>
             </select>
           </div>
           <Button className="w-full bg-gray-800 text-white hover:bg-gray-700 rounded-lg mt-4 transition-colors">
