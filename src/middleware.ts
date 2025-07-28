@@ -1,4 +1,3 @@
-
 import {
   convexAuthNextjsMiddleware,
   createRouteMatcher,

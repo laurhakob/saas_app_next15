@@ -1,49 +1,98 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ImageUp, Upload } from "lucide-react";
 import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/features/auth/api/use-current-user";
 
 export default function CompanionForm() {
+  const [name, setName] = useState("");
+  const [subject, setSubject] = useState("");
+  const [topic, setTopic] = useState("");
   const [selectedVoice, setSelectedVoice] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("");
+  const [error, setError] = useState("");
+  const createCompanion = useMutation(api.companions.createCompanion);
+  const router = useRouter();
+  const { data: user, isLoading } = useCurrentUser();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) {
+      setError("You must be logged in to create a companion.");
+      return;
+    }
+    if (!name || !subject || !topic || !selectedVoice || !selectedStyle) {
+      setError("All fields are required.");
+      return;
+    }
+
+    try {
+      const companionId = await createCompanion({
+        name,
+        subject,
+        topic,
+        voiceType: selectedVoice,
+        speakingStyle: selectedStyle,
+      });
+      router.push(`/companion-session/${companionId}`);
+    } catch{
+      setError("Failed to create companion. Please try again.");
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-6">
-        <h1 className="text-2xl font-semibold mb-6 text-center">Companion Builder</h1>
-        <div className="mb-6">
-          <h2 className="text-lg font-medium mb-4 text-center">Companion Icon</h2>
-          <div className="flex space-x-4 justify-center">
-            <Button className="w-14 h-10 bg-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors">
-              {/* Picture icon placeholder */}
-              <ImageUp className="h-15 w-15 text-gray-500" />
-            </Button>
-            <Button className="bg-gray-800 text-white hover:bg-gray-700 rounded-lg flex items-center space-x-2 px-4 py-2 transition-colors">
-              <Upload className="h-4 w-4" />
-              <span>Upload Image</span>
-            </Button>
+        <h1 className="text-2xl font-semibold mb-6 text-center">
+          Companion Builder
+        </h1>
+        {error && (
+          <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+            <p>{error}</p>
           </div>
-        </div>
-        <div className="space-y-6">
+        )}
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
               Companion Name
             </label>
-            <Input placeholder="Enter the companion name – ex: Calculus King" className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter the companion name – ex: Calculus King"
+              className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
               Subject
             </label>
-            <Input placeholder="Enter the subject – ex: Math" className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors" />
+            <Input
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Enter the subject – ex: Math"
+              className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
               What should this companion teach?
             </label>
-            <Input placeholder="Enter the topic you want to learn – ex: Derivatives" className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors" />
+            <Input
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="Enter the topic you want to learn – ex: Derivatives"
+              className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
@@ -73,10 +122,13 @@ export default function CompanionForm() {
               <option value="casual">Casual</option>
             </select>
           </div>
-          <Button className="w-full bg-gray-800 text-white hover:bg-gray-700 rounded-lg mt-4 transition-colors">
+          <Button
+            type="submit"
+            className="w-full bg-gray-800 text-white hover:bg-gray-700 rounded-lg mt-4 transition-colors"
+          >
             Build Companion
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );
