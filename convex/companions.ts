@@ -1,4 +1,3 @@
-
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
@@ -10,6 +9,7 @@ export const createCompanion = mutation({
     topic: v.string(),
     voiceType: v.string(),
     speakingStyle: v.string(),
+    duration: v.number(),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -24,6 +24,7 @@ export const createCompanion = mutation({
       topic: args.topic,
       voiceType: args.voiceType,
       speakingStyle: args.speakingStyle,
+      duration: args.duration,
     });
 
     return companionId;

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ export default function CompanionForm() {
   const [topic, setTopic] = useState("");
   const [selectedVoice, setSelectedVoice] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("");
+  const [duration, setDuration] = useState("");
   const [error, setError] = useState("");
   const createCompanion = useMutation(api.companions.createCompanion);
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function CompanionForm() {
       setError("You must be logged in to create a companion.");
       return;
     }
-    if (!name || !subject || !topic || !selectedVoice || !selectedStyle) {
+    if (!name || !subject || !topic || !selectedVoice || !selectedStyle || !duration) {
       setError("All fields are required.");
       return;
     }
@@ -38,9 +38,10 @@ export default function CompanionForm() {
         topic,
         voiceType: selectedVoice,
         speakingStyle: selectedStyle,
+        duration: parseInt(duration, 10),
       });
       router.push(`/companion-session/${companionId}`);
-    } catch{
+    } catch {
       setError("Failed to create companion. Please try again.");
     }
   };
@@ -68,7 +69,7 @@ export default function CompanionForm() {
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter the companion name – ex: Calculus King"
+              placeholder="Enter the companion name"
               className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
             />
           </div>
@@ -76,27 +77,34 @@ export default function CompanionForm() {
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
               Subject
             </label>
-            <Input
+            <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="Enter the subject – ex: Math"
-              className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
-            />
+              className="w-full p-2 border border-gray-300 rounded-lg focus:border-gray-800 transition-colors"
+            >
+              <option value="">Select Subject</option>
+              <option value="Maths">Maths</option>
+              <option value="Language">Language</option>
+              <option value="Science">Science</option>
+              <option value="History">History</option>
+              <option value="Coding">Coding</option>
+              <option value="Economics">Economics</option>
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
-              What should this companion teach?
+              What should this companion help with?
             </label>
             <Input
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              placeholder="Enter the topic you want to learn – ex: Derivatives"
+              placeholder="Enter the topic you want to learn"
               className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
-              Voice Type
+              Voice
             </label>
             <select
               value={selectedVoice}
@@ -110,7 +118,7 @@ export default function CompanionForm() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
-              Speaking Style
+              Style
             </label>
             <select
               value={selectedStyle}
@@ -121,6 +129,19 @@ export default function CompanionForm() {
               <option value="formal">Formal</option>
               <option value="casual">Casual</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 text-center">
+              Estimated session duration in minutes
+            </label>
+            <Input
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="Enter duration in minutes"
+              className="rounded-lg border-gray-300 focus:border-gray-800 transition-colors"
+              min="1"
+            />
           </div>
           <Button
             type="submit"

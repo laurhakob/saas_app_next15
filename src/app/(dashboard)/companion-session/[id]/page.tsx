@@ -54,6 +54,10 @@ export default function CompanionSession() {
             </h3>
             <p className="text-gray-600">{companion.speakingStyle}</p>
           </div>
+          <div>
+            <h3 className="text-sm font-medium text-gray-700">Estimated session duration in minutes</h3>
+            <p className="text-gray-600">{companion.duration}</p>
+          </div>
         </CardContent>
       </Card>
     </div>

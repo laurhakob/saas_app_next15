@@ -11,6 +11,7 @@ const schema = defineSchema({
     topic: v.string(),
     voiceType: v.string(),
     speakingStyle: v.string(),
+    duration: v.optional(v.number()),
   }).index("by_userId", ["userId"]),
 });
 
