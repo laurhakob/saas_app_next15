@@ -12,9 +12,12 @@ export default function LearningCompanions() {
   const companions = useQuery(api.companions.getUserCompanions) || [];
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
 
-  const filteredCompanions = companions.filter((companion) =>
-    companion.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanions = companions.filter(
+    (companion) =>
+      companion.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedSubject === "" || companion.subject === selectedSubject)
   );
 
   const colorMap: Record<string, { color: string; textColor: string }> = {
@@ -27,21 +30,42 @@ export default function LearningCompanions() {
     default: { color: "bg-gray-100", textColor: "text-gray-800" },
   };
 
+  const subjects = [
+    "Maths",
+    "Language",
+    "Science",
+    "History",
+    "Coding",
+    "Economics",
+  ];
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">
-          My Learning Companions
-        </h1>
-        <div className="relative w-80">
-          <Input
-            type="text"
-            placeholder="Search by companion name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-sm text-base"
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
+        <h1 className="text-2xl font-bold text-gray-800">Companion Library</h1>
+        <div className="flex items-center space-x-4">
+          <div className="relative w-80">
+            <Input
+              type="text"
+              placeholder="Search by companion name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-sm text-base"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
+          </div>
+          <select
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="p-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-sm text-base bg-white w-40"
+          >
+            <option value="">All Subjects</option>
+            {subjects.map((subj) => (
+              <option key={subj} value={subj}>
+                {subj}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
