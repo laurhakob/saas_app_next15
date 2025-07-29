@@ -13,6 +13,17 @@ const schema = defineSchema({
     speakingStyle: v.string(),
     duration: v.optional(v.number()),
   }).index("by_userId", ["userId"]),
+  conversationLogs: defineTable({
+    companionId: v.id("companions"),
+    userId: v.id("users"),
+    messages: v.array(
+      v.object({
+        speaker: v.string(),
+        text: v.string(),
+        timestamp: v.number(),
+      })
+    ),
+  }).index("by_companionId", ["companionId"]),
 });
 
 export default schema;
