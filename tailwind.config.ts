@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -54,6 +55,18 @@ export default {
         lightblue: {
           200: "#bfdbfe", // Light blue shade similar to the image
           800: "#1e40af", // Darker blue for text
+        },
+        green: {
+          100: "#d1e7dd",
+          800: "#0f5132",
+        },
+        red: {
+          100: "#f8d7da",
+          800: "#842029",
+        },
+        blue: {
+          100: "#cffafe",
+          900: "#0e7490",
         },
       },
       borderRadius: {
