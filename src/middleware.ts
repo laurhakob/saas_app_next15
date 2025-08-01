@@ -22,3 +22,4 @@ export default convexAuthNextjsMiddleware(async (request) => {
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
+
