@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -5,14 +6,16 @@ import { Save, Clock } from "lucide-react";
 import CompanionsList from "@/components/CompanionsList";
 import Cta from "@/components/Cta";
 import { useQuery } from "convex/react";
+import { useRouter } from "next/navigation";
 import { api } from "../../../convex/_generated/api";
 
 export default function Home() {
-  const companions = useQuery(api.companions.getUserCompanions) || [];
-  // Get the last 3 companions, sorted by creation time (most recent first)
-  const recentCompanions = companions
-    .slice()
-    .sort((a, b) => (b._creationTime || 0) - (a._creationTime || 0))
+  const allCompanions = useQuery(api.companions.getAllCompanions) || [];
+  const router = useRouter();
+
+  // Randomly select up to 3 companions
+  const randomCompanions = allCompanions
+    .sort(() => Math.random() - 0.5) // Shuffle randomly
     .slice(0, 3);
 
   const colorMap: Record<string, { color: string; textColor: string }> = {
@@ -28,14 +31,14 @@ export default function Home() {
   return (
     <div className="p-4">
       <div className="mb-6">
-        <h1 className="text-xl font-medium mb-4">Your Recent Companions</h1>
-        {recentCompanions.length === 0 ? (
+        <h1 className="text-xl font-medium mb-4">Popular Companions</h1>
+        {randomCompanions.length === 0 ? (
           <p className="text-gray-600 text-center">
-            No companions created yet. Start by building one!
+            No companions available yet. Start by building one!
           </p>
         ) : (
           <div className="flex justify-around space-x-4">
-            {recentCompanions.map((companion) => {
+            {randomCompanions.map((companion) => {
               const { color, textColor } =
                 colorMap[companion.subject] || colorMap.default;
               return (
@@ -67,9 +70,7 @@ export default function Home() {
                   </p>
                   <Button
                     className="w-full bg-gray-800 text-white hover:bg-gray-700 rounded-2xl"
-                    onClick={() =>
-                      window.location.href = `/companion-session/${companion._id}`
-                    }
+                    onClick={() => router.push(`/companion-session/${companion._id}`)}
                   >
                     Launch Lesson
                   </Button>
@@ -86,5 +87,3 @@ export default function Home() {
     </div>
   );
 }
-
-

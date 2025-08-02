@@ -17,7 +17,6 @@ export const createCompanion = mutation({
     if (!userId) {
       throw new Error("Unauthorized");
     }
-
     const companionId = await ctx.db.insert("companions", {
       userId,
       name: args.name,
@@ -27,7 +26,6 @@ export const createCompanion = mutation({
       speakingStyle: args.speakingStyle,
       duration: args.duration,
     });
-
     return companionId;
   },
 });
@@ -57,6 +55,13 @@ export const getUserCompanions = query({
   },
 });
 
+export const getAllCompanions = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("companions").collect();
+  },
+});
+
 export const getCompanionCreator = query({
   args: { companionId: v.id("companions") },
   handler: async (ctx, args) => {
@@ -68,6 +73,3 @@ export const getCompanionCreator = query({
     return user ? { name: user.name, image: user.image } : { name: "Unknown", image: null };
   },
 });
-
-
-
