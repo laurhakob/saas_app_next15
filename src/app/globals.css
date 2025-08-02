@@ -107,11 +107,25 @@ body,
   }
 
   @keyframes wave {
-    0%, 100% {
+    0%,
+    100% {
       transform: scaleY(1);
     }
     50% {
       transform: scaleY(0.3);
     }
+  }
+
+  .progress-bar {
+    height: 8px;
+    background-color: hsl(var(--muted));
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background-color: hsl(var(--primary));
+    transition: width 0.3s ease-in-out;
   }
 }

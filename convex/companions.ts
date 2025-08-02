@@ -68,3 +68,6 @@ export const getCompanionCreator = query({
     return user ? { name: user.name, image: user.image } : { name: "Unknown", image: null };
   },
 });
+
+
+
