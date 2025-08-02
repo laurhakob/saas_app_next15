@@ -88,6 +88,12 @@ body,
     animation: wave 0.8s ease-in-out infinite;
   }
 
+  .voice-animation.muted div {
+    background-color: hsl(var(--muted-foreground));
+    animation: none;
+    transform: scaleY(0.3);
+  }
+
   .voice-animation div:nth-child(2) {
     animation-delay: 0.2s;
   }
